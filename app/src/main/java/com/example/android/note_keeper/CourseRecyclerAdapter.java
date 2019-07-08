@@ -7,61 +7,58 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.google.android.material.snackbar.Snackbar;
+
 import java.util.List;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-public class NoteRecyclerAdapter extends RecyclerView.Adapter<NoteRecyclerAdapter.ViewHolder> {
+public class CourseRecyclerAdapter extends RecyclerView.Adapter<CourseRecyclerAdapter.ViewHolder> {
     private final Context mContext;
-    private final List<NoteInfo> mNotes;
+    private final List<CourseInfo> mCourses;
     private final LayoutInflater mLayoutInflater;
 
-    public NoteRecyclerAdapter(Context mContext, List<NoteInfo> mNotes) {
+    public CourseRecyclerAdapter(Context mContext, List<CourseInfo> mCourses) {
         this.mContext = mContext;
         mLayoutInflater = LayoutInflater.from(mContext);
-        this.mNotes = mNotes;
+        this.mCourses = mCourses;
     }
 
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View itemView = mLayoutInflater.inflate(R.layout.item_note_list,parent,false);
+        View itemView = mLayoutInflater.inflate(R.layout.item_course_list,parent,false);
 
         return new ViewHolder(itemView);
     }
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        NoteInfo notes = mNotes.get(position);
-        holder.mTextCourse.setText(notes.getCourse().getTitle());
-        holder.mTextTitle.setText(notes.getTitle());
+        CourseInfo course = mCourses.get(position);
+        holder.mTextCourse.setText(course.getTitle());
         holder.mCurrentPosition = position;
 
     }
 
     @Override
     public int getItemCount() {
-        return mNotes.size();
+        return mCourses.size();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder{
 
         public final TextView mTextCourse;
-        public final TextView mTextTitle;
         public int mCurrentPosition;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             mTextCourse = (TextView)itemView.findViewById(R.id.text_course);
-            mTextTitle = (TextView)itemView.findViewById(R.id.text_title);
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Intent intent = new Intent (mContext, NoteActivity.class);
-                    intent.putExtra(NoteActivity.NOTE_POSITION,mCurrentPosition);
-                    mContext.startActivity(intent);
+                    Snackbar.make(v, mCourses.get(mCurrentPosition).getTitle(), Snackbar.LENGTH_LONG).show();
                 }
             });
 
